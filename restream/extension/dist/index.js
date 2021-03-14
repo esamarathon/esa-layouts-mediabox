@@ -120,7 +120,7 @@ var RestreamInstance = /** @class */ (function (_super) {
     RestreamInstance.prototype.connect = function () {
         var _this = this;
         this.nodecg.log.info("[Restream, " + this.address + "] Connecting");
-        this.ws = new ws_1.default("ws://" + this.address + "/?key=" + this.key);
+        this.ws = new ws_1.default("ws://" + this.address + "/ws?key=" + this.key);
         this.ws.once('open', function () {
             _this.emit('connected');
             _this.nodecg.log.info("[Restream, " + _this.address + "] Connected");
@@ -147,14 +147,13 @@ var RestreamInstance = /** @class */ (function (_super) {
             }
         });
     };
-    RestreamInstance.prototype.startStream = function (channel, lowLatency) {
+    RestreamInstance.prototype.startStream = function (channel) {
         return __awaiter(this, void 0, void 0, function () {
             var msg;
             return __generator(this, function (_a) {
                 msg = {
                     type: 'Start',
                     channel: channel,
-                    lowLatency: lowLatency,
                 };
                 return [2 /*return*/, this.sendMsg(msg)];
             });
@@ -205,7 +204,6 @@ var Restream = /** @class */ (function () {
                 var defaultData = {
                     connected: false,
                     overridden: false,
-                    lowLatency: true,
                 };
                 (_a = this.restreamData.value).push.apply(_a, Array(count).fill(defaultData));
             }
@@ -214,35 +212,34 @@ var Restream = /** @class */ (function () {
                 restream.on('connected', function () { _this.restreamData.value[i].connected = true; });
                 restream.on('disconnected', function () { _this.restreamData.value[i].connected = false; });
                 restream.on('update', function (_a) {
-                    var lowLatency = _a.lowLatency, channel = _a.channel, uuid_ = _a.uuid;
-                    _this.updateData(i, { lowLatency: lowLatency, channel: channel, uuid: uuid_ });
+                    var channel = _a.channel, uuid_ = _a.uuid;
+                    _this.updateData(i, { channel: channel, uuid: uuid_ });
                 });
                 return restream;
             });
             this.nodecg.listenFor('restreamOverride', function (data, cb) {
                 if (data === void 0) { data = {}; }
                 return __awaiter(_this, void 0, void 0, function () {
-                    var instance, channel, _a, lowLatency, channel_, uuid_;
-                    var _b, _c, _d;
-                    return __generator(this, function (_e) {
-                        switch (_e.label) {
+                    var instance, channel, _a, channel_, uuid_;
+                    var _b;
+                    return __generator(this, function (_c) {
+                        switch (_c.label) {
                             case 0:
                                 instance = this.instances[data.index || 0];
                                 channel = data.channel || ((_b = this.restreamData.value[data.index || 0]) === null || _b === void 0 ? void 0 : _b.channel);
                                 if (!(instance && channel)) return [3 /*break*/, 2];
-                                return [4 /*yield*/, instance.startStream(channel, (_c = data.lowLatency) !== null && _c !== void 0 ? _c : (_d = this.restreamData.value[data.index || 0]) === null || _d === void 0 ? void 0 : _d.lowLatency)];
+                                return [4 /*yield*/, instance.startStream(channel)];
                             case 1:
-                                _a = _e.sent(), lowLatency = _a.lowLatency, channel_ = _a.channel, uuid_ = _a.uuid;
+                                _a = _c.sent(), channel_ = _a.channel, uuid_ = _a.uuid;
                                 this.updateData(data.index || 0, {
                                     overridden: true,
-                                    lowLatency: lowLatency,
                                     channel: channel_,
                                     uuid: uuid_,
                                 });
                                 // Currently not checking for error msg here, so will always seem successful!
                                 this.nodecg.log.info('[Restream] Successfully overridden stream '
                                     + ("" + ((data.index || 0) + 1)));
-                                _e.label = 2;
+                                _c.label = 2;
                             case 2:
                                 if (cb && !cb.handled) {
                                     cb();
@@ -255,7 +252,7 @@ var Restream = /** @class */ (function () {
             this.nodecg.listenFor('restreamRestart', function (data, cb) {
                 if (data === void 0) { data = {}; }
                 return __awaiter(_this, void 0, void 0, function () {
-                    var instance, _a, lowLatency, channel, uuid_;
+                    var instance, _a, channel, uuid_;
                     return __generator(this, function (_b) {
                         switch (_b.label) {
                             case 0:
@@ -263,8 +260,8 @@ var Restream = /** @class */ (function () {
                                 if (!instance) return [3 /*break*/, 2];
                                 return [4 /*yield*/, instance.restartStream()];
                             case 1:
-                                _a = _b.sent(), lowLatency = _a.lowLatency, channel = _a.channel, uuid_ = _a.uuid;
-                                this.updateData(data.index || 0, { lowLatency: lowLatency, channel: channel, uuid: uuid_ });
+                                _a = _b.sent(), channel = _a.channel, uuid_ = _a.uuid;
+                                this.updateData(data.index || 0, { channel: channel, uuid: uuid_ });
                                 // Currently not checking for error msg here, so will always seem successful!
                                 this.nodecg.log.info("[Restream] Successfully restarted stream " + ((data.index || 0) + 1));
                                 _b.label = 2;
@@ -280,7 +277,7 @@ var Restream = /** @class */ (function () {
             this.nodecg.listenFor('restreamStop', function (data, cb) {
                 if (data === void 0) { data = {}; }
                 return __awaiter(_this, void 0, void 0, function () {
-                    var instance, _a, lowLatency, channel, uuid_;
+                    var instance, _a, channel, uuid_;
                     return __generator(this, function (_b) {
                         switch (_b.label) {
                             case 0:
@@ -288,8 +285,8 @@ var Restream = /** @class */ (function () {
                                 if (!instance) return [3 /*break*/, 2];
                                 return [4 /*yield*/, instance.stopStream()];
                             case 1:
-                                _a = _b.sent(), lowLatency = _a.lowLatency, channel = _a.channel, uuid_ = _a.uuid;
-                                this.updateData(data.index || 0, { lowLatency: lowLatency, channel: channel, uuid: uuid_ });
+                                _a = _b.sent(), channel = _a.channel, uuid_ = _a.uuid;
+                                this.updateData(data.index || 0, { channel: channel, uuid: uuid_ });
                                 // Currently not checking for error msg here, so will always seem successful!
                                 this.nodecg.log.info("[Restream] Successfully stopped stream " + ((data.index || 0) + 1));
                                 _b.label = 2;
@@ -312,46 +309,43 @@ var Restream = /** @class */ (function () {
     Restream.prototype.updateMultipleInstances = function (channels) {
         var _this = this;
         this.instances.forEach(function (instance, i) { return __awaiter(_this, void 0, void 0, function () {
-            var newChan, _a, lowLatency, channel, uuid_, _b, lowLatency, channel, uuid_;
-            var _c;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
+            var newChan, _a, channel, uuid_, _b, channel, uuid_;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
                         newChan = channels[i];
                         if (!!newChan) return [3 /*break*/, 2];
                         return [4 /*yield*/, instance.stopStream()];
                     case 1:
-                        _a = _d.sent(), lowLatency = _a.lowLatency, channel = _a.channel, uuid_ = _a.uuid;
-                        this.updateData(i, { lowLatency: lowLatency, channel: channel, uuid: uuid_ });
+                        _a = _c.sent(), channel = _a.channel, uuid_ = _a.uuid;
+                        this.updateData(i, { channel: channel, uuid: uuid_ });
                         // Currently not checking for error msg here, so will always seem successful!
                         this.nodecg.log.info("[Restream] Successfully stopped stream " + (i + 1));
                         return [3 /*break*/, 4];
                     case 2:
                         if (!(newChan && newChan !== instance.channel)) return [3 /*break*/, 4];
-                        return [4 /*yield*/, instance.startStream(newChan, (_c = this.restreamData.value[i]) === null || _c === void 0 ? void 0 : _c.lowLatency)];
+                        return [4 /*yield*/, instance.startStream(newChan)];
                     case 3:
-                        _b = _d.sent(), lowLatency = _b.lowLatency, channel = _b.channel, uuid_ = _b.uuid;
+                        _b = _c.sent(), channel = _b.channel, uuid_ = _b.uuid;
                         this.updateData(i, {
                             overridden: false,
-                            lowLatency: lowLatency,
                             channel: channel,
                             uuid: uuid_,
                         });
                         // Currently not checking for error msg here, so will always seem successful!
                         this.nodecg.log.info("[Restream] Successfully started stream " + (i + 1));
-                        _d.label = 4;
+                        _c.label = 4;
                     case 4: return [2 /*return*/];
                 }
             });
         }); });
     };
     Restream.prototype.updateData = function (i, opts) {
-        var _a, _b;
+        var _a;
         this.nodecg.log.debug("[Restream] Updating restreamData[" + i + "]:", opts);
         this.restreamData.value[i] = {
             connected: this.restreamData.value[i].connected,
             overridden: (_a = opts.overridden) !== null && _a !== void 0 ? _a : this.restreamData.value[i].overridden,
-            lowLatency: (_b = opts.lowLatency) !== null && _b !== void 0 ? _b : this.restreamData.value[i].lowLatency,
             channel: opts.channel,
             uuid: opts.uuid || this.restreamData.value[i].uuid,
         };

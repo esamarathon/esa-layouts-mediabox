@@ -18,7 +18,7 @@ declare class RestreamInstance extends EventEmitter {
     constructor(nodecg: NodeCG, address: string, key: string);
     sendMsg(msg: RestreamTypes.AllSentMsg): Promise<RestreamTypes.ResponseMsg>;
     connect(): void;
-    startStream(channel: string, lowLatency?: boolean): Promise<RestreamTypes.ResponseMsg>;
+    startStream(channel: string): Promise<RestreamTypes.ResponseMsg>;
     stopStream(): Promise<RestreamTypes.ResponseMsg>;
     restartStream(): Promise<RestreamTypes.ResponseMsg>;
 }
