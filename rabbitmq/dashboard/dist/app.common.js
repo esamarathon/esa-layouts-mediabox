@@ -45402,7 +45402,7 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"136252b2-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/App.vue?vue&type=template&id=3a32b4ef&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c7cf34de-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/App.vue?vue&type=template&id=3a32b4ef&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (!_vm.useTestData)?_c('v-app',{style:({ 'font-style': 'italic' })},[_vm._v(" Not using test data. ")]):(!_vm.enable)?_c('v-app',{style:({ 'font-style': 'italic' })},[_vm._v(" RabbitMQ not enabled. ")]):_c('v-app',[_c('v-btn',{on:{"click":_vm.donation}},[_vm._v(" Donation ")]),_c('v-btn',{on:{"click":_vm.subscription}},[_vm._v(" Subscription ")]),_c('v-btn',{on:{"click":_vm.cheer}},[_vm._v(" Cheer ")])],1)}
 var staticRenderFns = []
 
