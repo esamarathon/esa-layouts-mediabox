@@ -104,7 +104,6 @@ var OBS = /** @class */ (function (_super) {
                 _this.streaming = false;
                 _this.emit('streamingStatusChanged', _this.streaming, !_this.streaming);
             });
-            // @ts-ignore: Pretty sure this emits an error.
             _this.conn.on('error', function (err) {
                 nodecg.log.warn('[OBS] Connection error');
                 nodecg.log.debug('[OBS] Connection error:', err);

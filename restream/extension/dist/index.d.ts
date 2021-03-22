@@ -32,7 +32,7 @@ declare class Restream {
      * or stop if needed.
      * @param channels List of channels.
      */
-    updateMultipleInstances(channels: (string | undefined)[]): void;
+    updateMultipleInstances(channels: (string | null | undefined)[]): void;
     private updateData;
 }
 export default Restream;

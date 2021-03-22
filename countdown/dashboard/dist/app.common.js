@@ -48392,6 +48392,11 @@ var vuetify_default = /*#__PURE__*/__webpack_require__.n(vuetify);
 var vuetify_min = __webpack_require__("de2a");
 
 // CONCATENATED MODULE: /home/runner/work/esa-layouts-shared/esa-layouts-shared/browser_shared/vuetify.ts
+/* eslint-disable import/no-self-import */
+/**
+ * This file may have a TypeScript error below (in VS Code at least) because it
+ * believes it to be importing itself, when it's actually not, so builds fine.
+ */
 
 
 
